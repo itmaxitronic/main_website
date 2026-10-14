@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ماكسيترونيك — مراقبة بالفيديو في الجزائر</title>
+  <meta name="description" content="ماكسيترونيك: بيع وتركيب احترافي لأنظمة المراقبة بالفيديو في الجزائر." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:   { 950: '#081426', 900: '#0D2340', 800: '#13315A', 700: '#1B3A63' },
+            steel:  { 300: '#C3D0E3', 400: '#93A7C4', 500: '#6B7F9E' },
+            amber:  { brand: '#FFB224', brandDark: '#E69500' },
+          },
+          fontFamily: {
+            display: ['"Space Grotesk"', '"IBM Plex Sans Arabic"', 'sans-serif'],
+            body:    ['Inter', '"IBM Plex Sans Arabic"', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: Inter, "IBM Plex Sans Arabic", sans-serif; }
+
+    /* Arabic: swap fonts, neutralize Latin letter-spacing */
+    html[lang="ar"] body,
+    html[lang="ar"] .font-display { font-family: "IBM Plex Sans Arabic", sans-serif; }
+    html[lang="ar"] .tracking-tight,
+    html[lang="ar"] .tracking-widest,
+    html[lang="ar"] .tracking-wide { letter-spacing: 0 !important; }
+
+    /* REC blink */
+    @keyframes rec-blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: .15; } }
+    .rec-dot { animation: rec-blink 1.4s steps(1) infinite; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.is-visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rec-dot { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* Visible keyboard focus */
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid #FFB224; outline-offset: 3px; border-radius: 4px;
+    }
+
+    /* Subtle grid texture for the hero */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(147,167,196,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(147,167,196,.06) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+  </style>
+</head>
+
+<body class="bg-navy-950 text-steel-300 font-body antialiased">
+
+  <!-- ============ HEADER ============ -->
+  <header class="sticky top-0 z-40 border-b border-navy-700/60 bg-navy-950/85 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
+
+      <!-- Logo -->
+      <a href="#top" class="flex items-center gap-2.5" aria-label="Maxitronic">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+          <rect x="1.5" y="1.5" width="27" height="27" rx="6" stroke="#FFB224" stroke-width="2"/>
+          <circle cx="15" cy="15" r="6.5" stroke="#F4F8FE" stroke-width="2"/>
+          <circle cx="15" cy="15" r="2.2" fill="#FFB224"/>
+        </svg>
+        <span class="font-display text-lg font-bold tracking-wide text-white">MAXITRONIC</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden items-center gap-7 text-sm font-medium md:flex" aria-label="Navigation principale">
+        <a href="#services" data-i18n="nav.services" class="transition hover:text-white">خدماتنا</a>
+        <a href="#realisations" data-i18n="nav.real" class="transition hover:text-white">إنجازاتنا</a>
+        <a href="#why"      data-i18n="nav.why"      class="transition hover:text-white">لماذا نحن؟</a>
+        <a href="#contact"  data-i18n="nav.contact"  class="transition hover:text-white">اتصل بنا</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <!-- Language switcher -->
+        <div class="flex overflow-hidden rounded-lg border border-navy-700 text-xs font-semibold" role="group" aria-label="Langue">
+          <button data-lang="fr" class="lang-btn px-2.5 py-1.5 text-steel-400 transition hover:text-white">FR</button>
+          <button data-lang="ar" class="lang-btn bg-amber-brand px-2.5 py-1.5 text-navy-950">AR</button>
+          <button data-lang="en" class="lang-btn px-2.5 py-1.5 text-steel-400 transition hover:text-white">EN</button>
+        </div>
+
+        <!-- CTA (desktop) -->
+        <a href="#contact" data-i18n="nav.cta"
+           class="hidden rounded-lg bg-amber-brand px-4 py-2 text-sm font-semibold text-navy-950 shadow-lg shadow-amber-brand/20 transition hover:bg-amber-brandDark md:inline-block">
+          اطلب عرض سعر</a>
+
+        <!-- Burger -->
+        <button id="menu-btn" class="md:hidden" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 7h16M4 12h16M4 17h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden border-t border-navy-700/60 bg-navy-900 px-5 py-4 md:hidden">
+      <nav class="flex flex-col gap-4 text-sm font-medium" aria-label="Navigation mobile">
+        <a href="#services" data-i18n="nav.services" class="mobile-link">خدماتنا</a>
+        <a href="#realisations" data-i18n="nav.real" class="mobile-link">إنجازاتنا</a>
+        <a href="#why"      data-i18n="nav.why"      class="mobile-link">لماذا نحن؟</a>
+        <a href="#contact"  data-i18n="nav.contact"  class="mobile-link">اتصل بنا</a>
+        <a href="#contact"  data-i18n="nav.cta"
+           class="mobile-link rounded-lg bg-amber-brand px-4 py-2.5 text-center font-semibold text-navy-950">اطلب عرض سعر</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="relative overflow-hidden">
+      <img src="img/hero.webp" alt="" aria-hidden="true" fetchpriority="high"
+           class="absolute inset-0 h-full w-full object-cover opacity-30" />
+      <div class="pointer-events-none absolute inset-0 bg-navy-950/60"></div>
+      <div class="grid-bg pointer-events-none absolute inset-0"></div>
+      <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy-950/40 via-transparent to-navy-950"></div>
+
+      <div class="relative mx-auto max-w-6xl px-5 pb-24 pt-16 sm:pt-24">
+        <!-- Viewfinder frame (signature) -->
+        <div class="relative mx-auto max-w-3xl p-6 sm:p-10" aria-hidden="false">
+          <!-- Corner brackets -->
+          <span aria-hidden="true" class="absolute left-0 top-0 h-7 w-7 border-l-2 border-t-2 border-amber-brand/80"></span>
+          <span aria-hidden="true" class="absolute right-0 top-0 h-7 w-7 border-r-2 border-t-2 border-amber-brand/80"></span>
+          <span aria-hidden="true" class="absolute bottom-0 left-0 h-7 w-7 border-b-2 border-l-2 border-amber-brand/80"></span>
+          <span aria-hidden="true" class="absolute bottom-0 right-0 h-7 w-7 border-b-2 border-r-2 border-amber-brand/80"></span>
+
+          <!-- CCTV overlay line -->
+          <div class="mb-6 flex items-center justify-between font-mono text-[11px] uppercase text-steel-500 sm:text-xs">
+            <span class="flex items-center gap-2">
+              <span class="rec-dot inline-block h-2 w-2 rounded-full bg-red-500"></span>
+              <span>REC</span>
+            </span>
+            <span id="cam-label" data-i18n="hero.cam">كاميرا 01 · الجزائر</span>
+            <span id="cam-clock" aria-hidden="true">00:00:00</span>
+          </div>
+
+          <p data-i18n="hero.badge" class="mb-4 text-center text-xs font-semibold uppercase tracking-widest text-amber-brand">بيع وتركيب — الجزائر</p>
+
+          <h1 data-i18n="hero.title"
+              class="font-display text-center text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+            أمّن ما يهمّك أكثر.</h1>
+
+          <p data-i18n="hero.sub" class="mx-auto mt-5 max-w-xl text-center text-base leading-relaxed text-steel-400 sm:text-lg">ماكسيترونيك توفّر وتركّب أنظمة مراقبة بالفيديو احترافية — كاميرات، أجهزة تسجيل DVR/NVR وملحقات — للأفراد والشركات في كامل الجزائر.</p>
+
+          <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a href="#contact" data-i18n="hero.cta"
+               class="w-full rounded-lg bg-amber-brand px-7 py-3.5 text-center text-base font-semibold text-navy-950 shadow-xl shadow-amber-brand/25 transition hover:-translate-y-0.5 hover:bg-amber-brandDark sm:w-auto">
+              اطلب عرض سعر</a>
+            <a href="#services" data-i18n="hero.cta2"
+               class="w-full rounded-lg border border-navy-700 px-7 py-3.5 text-center text-base font-medium text-steel-300 transition hover:border-steel-500 hover:text-white sm:w-auto">
+              اكتشف خدماتنا</a>
+          </div>
+        </div>
+
+        <!-- Trust strip -->
+        <div class="mx-auto mt-14 grid max-w-3xl grid-cols-3 gap-4 border-t border-navy-700/60 pt-8 text-center">
+          <div>
+            <svg class="mx-auto mb-2 text-amber-brand" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.2 7 22l5-3 5 3-1.2-8.8"/></svg>
+            <p data-i18n="hero.stat1" class="text-sm font-medium text-white sm:text-base">سنوات من الخبرة</p>
+          </div>
+          <div>
+            <svg class="mx-auto mb-2 text-amber-brand" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
+            <p data-i18n="hero.stat2" class="text-sm font-medium text-white sm:text-base">للمهنيين والأفراد</p>
+          </div>
+          <div>
+            <svg class="mx-auto mb-2 text-amber-brand" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.1-7-11a7 7 0 0 1 14 0c0 5.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <p data-i18n="hero.stat3" class="text-sm font-medium text-white sm:text-base">في كامل الجزائر</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section id="services" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-20">
+      <p data-i18n="services.eyebrow" class="text-xs font-semibold uppercase tracking-widest text-amber-brand">ما نقوم به</p>
+      <h2 data-i18n="services.title" class="font-display mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">خدماتنا</h2>
+
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        <!-- Card 1 : Vente -->
+        <article class="reveal group overflow-hidden rounded-2xl border border-navy-700/70 bg-navy-900 transition hover:border-amber-brand/50">
+          <div class="aspect-[4/3] overflow-hidden">
+            <button type="button" class="lb-trigger block h-full w-full cursor-zoom-in" data-full="img/full/vente.webp" aria-label="تكبير الصورة"><img src="img/vente.webp" alt="خزانة أجهزة تسجيل ومحوّلات PoE ركّبتها ماكسيترونيك" data-i18n-alt="services.s1.alt" loading="lazy"
+                 class="h-full w-full object-cover transition duration-500 group-hover:scale-105" /></button>
+          </div>
+          <div class="p-7 sm:p-9">
+          <div class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-navy-800 text-amber-brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2.5" y="6" width="13" height="9" rx="2"/>
+              <path d="M15.5 9.5 21 7v8l-5.5-2.5M6 18h6"/>
+            </svg>
+          </div>
+          <h3 data-i18n="services.s1.title" class="font-display text-xl font-bold text-white">بيع معدات عالية الجودة</h3>
+          <p data-i18n="services.s1.desc" class="mt-3 leading-relaxed text-steel-400">
+            كاميرات IP وتناظرية، أجهزة تسجيل DVR/NVR، كوابل، محوّلات طاقة وملحقات. نختار علامات موثوقة وننصحك بالعتاد المناسب لموقعك وميزانيتك.</p>
+          <ul class="mt-5 space-y-2 text-sm text-steel-400">
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-amber-brand"></span><span data-i18n="services.s1.f1">كاميرات داخلية وخارجية</span></li>
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-amber-brand"></span><span data-i18n="services.s1.f2">أجهزة تسجيل DVR و NVR</span></li>
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-amber-brand"></span><span data-i18n="services.s1.f3">ملحقات وكوابل معتمدة</span></li>
+          </ul>
+          </div>
+        </article>
+
+        <!-- Card 2 : Installation -->
+        <article class="reveal group overflow-hidden rounded-2xl border border-navy-700/70 bg-navy-900 transition hover:border-amber-brand/50">
+          <div class="aspect-[4/3] overflow-hidden">
+            <button type="button" class="lb-trigger block h-full w-full cursor-zoom-in" data-full="img/full/installation.webp" aria-label="تكبير الصورة"><img src="img/installation.webp" alt="كاميرات مركّبة في سقف مساحة تجارية كبرى" data-i18n-alt="services.s2.alt" loading="lazy"
+                 class="h-full w-full object-cover transition duration-500 group-hover:scale-105" /></button>
+          </div>
+          <div class="p-7 sm:p-9">
+          <div class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-navy-800 text-amber-brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 0 0 6-6L14.5 12l-2.5-2.5 2.7-3.2Z"/>
+            </svg>
+          </div>
+          <h3 data-i18n="services.s2.title" class="font-display text-xl font-bold text-white">تركيب وصيانة باحتراف</h3>
+          <p data-i18n="services.s2.desc" class="mt-3 leading-relaxed text-steel-400">معاينة في الموقع، تركيب متقن على يد تقنيين مؤهلين، تفعيل المشاهدة عن بُعد على هاتفك، ثم متابعة بعد التركيب.</p>
+          <ul class="mt-5 space-y-2 text-sm text-steel-400">
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-amber-brand"></span><span data-i18n="services.s2.f1">معاينة وعرض سعر في الموقع</span></li>
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-amber-brand"></span><span data-i18n="services.s2.f2">مشاهدة عن بُعد على الهاتف</span></li>
+            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-amber-brand"></span><span data-i18n="services.s2.f3">متابعة ما بعد البيع عبر البريد وواتساب</span></li>
+          </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ RÉALISATIONS ============ -->
+    <section id="realisations" class="mx-auto max-w-6xl scroll-mt-24 px-5 pb-20">
+      <p data-i18n="real.eyebrow" class="text-xs font-semibold uppercase tracking-widest text-amber-brand">في الميدان</p>
+      <h2 data-i18n="real.title" class="font-display mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">إنجازاتنا</h2>
+      <p data-i18n="real.sub" class="mt-3 max-w-2xl text-steel-400">بعض التركيبات التي أنجزتها فرقنا: محلات، مراكز تجارية، مقرات إدارية.</p>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <figure class="reveal group relative overflow-hidden rounded-2xl border border-navy-700/70 bg-navy-900">
+            <button type="button" class="lb-trigger block h-full w-full cursor-zoom-in" data-full="img/full/r-centre-commercial.webp" aria-label="تكبير الصورة"><img src="img/r-centre-commercial.webp" alt="مركز تجاري — جدار شاشات" data-i18n-alt="real.g1" loading="lazy"
+                 class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" /></button>
+<span aria-hidden="true" class="pointer-events-none absolute end-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/70 text-white opacity-0 transition group-hover:opacity-100"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+            <figcaption data-i18n="real.g1"
+                        class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950 via-navy-950/80 to-transparent px-5 pb-4 pt-10 text-sm font-medium text-white">مركز تجاري — جدار شاشات</figcaption>
+          </figure>
+          <figure class="reveal group relative overflow-hidden rounded-2xl border border-navy-700/70 bg-navy-900">
+            <button type="button" class="lb-trigger block h-full w-full cursor-zoom-in" data-full="img/full/r-poste-controle.webp" aria-label="تكبير الصورة"><img src="img/r-poste-controle.webp" alt="غرفة مراقبة — إقامة وموقف سيارات" data-i18n-alt="real.g2" loading="lazy"
+                 class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" /></button>
+<span aria-hidden="true" class="pointer-events-none absolute end-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/70 text-white opacity-0 transition group-hover:opacity-100"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+            <figcaption data-i18n="real.g2"
+                        class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950 via-navy-950/80 to-transparent px-5 pb-4 pt-10 text-sm font-medium text-white">غرفة مراقبة — إقامة وموقف سيارات</figcaption>
+          </figure>
+          <figure class="reveal group relative overflow-hidden rounded-2xl border border-navy-700/70 bg-navy-900">
+            <button type="button" class="lb-trigger block h-full w-full cursor-zoom-in" data-full="img/full/r-caisses.webp" aria-label="تكبير الصورة"><img src="img/r-caisses.webp" alt="مساحة تجارية كبرى — منطقة الصناديق" data-i18n-alt="real.g3" loading="lazy"
+                 class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" /></button>
+<span aria-hidden="true" class="pointer-events-none absolute end-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/70 text-white opacity-0 transition group-hover:opacity-100"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+            <figcaption data-i18n="real.g3"
+                        class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950 via-navy-950/80 to-transparent px-5 pb-4 pt-10 text-sm font-medium text-white">مساحة تجارية كبرى — منطقة الصناديق</figcaption>
+          </figure>
+          <figure class="reveal group relative overflow-hidden rounded-2xl border border-navy-700/70 bg-navy-900">
+            <button type="button" class="lb-trigger block h-full w-full cursor-zoom-in" data-full="img/full/r-exterieur.webp" aria-label="تكبير الصورة"><img src="img/r-exterieur.webp" alt="خارجي — كاميرات قبة وأسطوانية على عمود" data-i18n-alt="real.g4" loading="lazy"
+                 class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" /></button>
+<span aria-hidden="true" class="pointer-events-none absolute end-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/70 text-white opacity-0 transition group-hover:opacity-100"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+            <figcaption data-i18n="real.g4"
+                        class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950 via-navy-950/80 to-transparent px-5 pb-4 pt-10 text-sm font-medium text-white">خارجي — كاميرات قبة وأسطوانية على عمود</figcaption>
+          </figure>
+          <figure class="reveal group relative overflow-hidden rounded-2xl border border-navy-700/70 bg-navy-900">
+            <button type="button" class="lb-trigger block h-full w-full cursor-zoom-in" data-full="img/full/r-baies.webp" aria-label="تكبير الصورة"><img src="img/r-baies.webp" alt="خزائن الشبكة والتسجيل" data-i18n-alt="real.g5" loading="lazy"
+                 class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" /></button>
+<span aria-hidden="true" class="pointer-events-none absolute end-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/70 text-white opacity-0 transition group-hover:opacity-100"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+            <figcaption data-i18n="real.g5"
+                        class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950 via-navy-950/80 to-transparent px-5 pb-4 pt-10 text-sm font-medium text-white">خزائن الشبكة والتسجيل</figcaption>
+          </figure>
+          <figure class="reveal group relative overflow-hidden rounded-2xl border border-navy-700/70 bg-navy-900">
+            <button type="button" class="lb-trigger block h-full w-full cursor-zoom-in" data-full="img/full/r-baie.webp" aria-label="تكبير الصورة"><img src="img/r-baie.webp" alt="خزانة تقنية مكبّلة" data-i18n-alt="real.g6" loading="lazy"
+                 class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105" /></button>
+<span aria-hidden="true" class="pointer-events-none absolute end-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/70 text-white opacity-0 transition group-hover:opacity-100"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg></span>
+            <figcaption data-i18n="real.g6"
+                        class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950 via-navy-950/80 to-transparent px-5 pb-4 pt-10 text-sm font-medium text-white">خزانة تقنية مكبّلة</figcaption>
+          </figure>
+      </div>
+    </section>
+
+    <!-- ============ POURQUOI NOUS ============ -->
+    <section id="why" class="scroll-mt-24 border-y border-navy-700/50 bg-navy-900/50">
+      <div class="mx-auto max-w-6xl px-5 py-20">
+        <p data-i18n="why.eyebrow" class="text-xs font-semibold uppercase tracking-widest text-amber-brand">التزاماتنا</p>
+        <h2 data-i18n="why.title" class="font-display mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">لماذا تختارنا؟</h2>
+
+        <div class="mt-10 grid gap-6 sm:grid-cols-3">
+          <div class="reveal rounded-2xl border border-navy-700/70 bg-navy-950 p-7">
+            <svg class="mb-4 text-amber-brand" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 21s-7-5.1-7-11a7 7 0 0 1 14 0c0 5.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/>
+            </svg>
+            <h3 data-i18n="why.w1.title" class="font-display text-lg font-bold text-white">في كامل الجزائر</h3>
+            <p data-i18n="why.w1.desc" class="mt-2 text-sm leading-relaxed text-steel-400">نتدخّل في كامل الجزائر، للمحلات والشركات والأفراد.</p>
+          </div>
+
+          <div class="reveal rounded-2xl border border-navy-700/70 bg-navy-950 p-7">
+            <svg class="mb-4 text-amber-brand" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="6"/><path d="M8.2 13.2 7 22l5-3 5 3-1.2-8.8"/>
+            </svg>
+            <h3 data-i18n="why.w2.title" class="font-display text-lg font-bold text-white">سنوات من الخبرة</h3>
+            <p data-i18n="why.w2.desc" class="mt-2 text-sm leading-relaxed text-steel-400">سنوات من التركيب في الميدان: مساحات تجارية كبرى، مراكز تجارية، مقرات إدارية وإقامات.</p>
+          </div>
+
+          <div class="reveal rounded-2xl border border-navy-700/70 bg-navy-950 p-7">
+            <svg class="mb-4 text-amber-brand" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 1 18 0"/><rect x="2" y="12" width="4" height="7" rx="1.5"/><rect x="18" y="12" width="4" height="7" rx="1.5"/><path d="M21 19a3 3 0 0 1-3 3h-3"/>
+            </svg>
+            <h3 data-i18n="why.w3.title" class="font-display text-lg font-bold text-white">متابعة ما بعد البيع</h3>
+            <p data-i18n="why.w3.desc" class="mt-2 text-sm leading-relaxed text-steel-400">بعد التركيب، نبقى على تواصل معك عبر البريد الإلكتروني وواتساب.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="mx-auto max-w-6xl scroll-mt-24 px-5 py-20">
+      <p data-i18n="contact.eyebrow" class="text-xs font-semibold uppercase tracking-widest text-amber-brand">لنتحدث عن مشروعك</p>
+      <h2 data-i18n="contact.title" class="font-display mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">اتصل بنا</h2>
+
+      <div class="mt-10 grid gap-10 lg:grid-cols-2">
+        <!-- Form -->
+        <form id="contact-form" class="reveal space-y-4" novalidate>
+          <div>
+            <label for="f-name" data-i18n="contact.form.name" class="mb-1.5 block text-sm font-medium text-steel-300">الاسم الكامل</label>
+            <input id="f-name" name="name" type="text" required data-i18n-placeholder="contact.form.namePh" placeholder="اسمك"
+                   class="w-full rounded-lg border border-navy-700 bg-navy-900 px-4 py-3 text-white placeholder-steel-500 transition focus:border-amber-brand" />
+          </div>
+          <div>
+            <label for="f-phone" data-i18n="contact.form.phone" class="mb-1.5 block text-sm font-medium text-steel-300">الهاتف</label>
+            <input id="f-phone" name="phone" type="tel" required dir="ltr" data-i18n-placeholder="contact.form.phonePh" placeholder="05 XX XX XX XX"
+                   class="w-full rounded-lg border border-navy-700 bg-navy-900 px-4 py-3 text-white placeholder-steel-500 transition focus:border-amber-brand" />
+          </div>
+          <div>
+            <label for="f-msg" data-i18n="contact.form.msg" class="mb-1.5 block text-sm font-medium text-steel-300">احتياجك</label>
+            <textarea id="f-msg" name="message" rows="4" required data-i18n-placeholder="contact.form.msgPh"
+                      placeholder="مثال: 4 كاميرات خارجية لمحل تجاري…"
+                      class="w-full resize-none rounded-lg border border-navy-700 bg-navy-900 px-4 py-3 text-white placeholder-steel-500 transition focus:border-amber-brand"></textarea>
+          </div>
+          <button type="submit" data-i18n="contact.form.submit"
+                  class="w-full rounded-lg bg-amber-brand px-6 py-3.5 font-semibold text-navy-950 shadow-lg shadow-amber-brand/20 transition hover:bg-amber-brandDark sm:w-auto">
+            إرسال عبر واتساب</button>
+          <p id="form-success" data-i18n="contact.form.success" class="hidden rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">يتم فتح واتساب مع طلبك جاهزاً: ما عليك سوى الضغط على إرسال.</p>
+        </form>
+
+        <!-- Coordonnées -->
+        <div class="reveal space-y-6">
+          <div class="rounded-2xl border border-navy-700/70 bg-navy-900 p-7">
+            <h3 data-i18n="contact.reachTitle" class="font-display text-lg font-bold text-white">تواصل معنا مباشرة</h3>
+            <p data-i18n="contact.reachSub" class="mt-2 text-sm text-steel-400">اتصل بنا أو راسلنا عبر البريد الإلكتروني أو واتساب.</p>
+            <div class="mt-5 space-y-3">
+              <a href="tel:+213554603322" class="flex items-center gap-3 rounded-lg border border-navy-700 px-4 py-3 text-white transition hover:border-amber-brand">
+                <svg class="shrink-0 text-amber-brand" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7A2 2 0 0 1 22 16.9Z"/></svg>
+                <span dir="ltr" class="font-medium">+213 554 60 33 22</span>
+              </a>
+              <a href="mailto:maxitronic.dz@gmail.com" class="flex items-center gap-3 rounded-lg border border-navy-700 px-4 py-3 text-white transition hover:border-amber-brand">
+                <svg class="shrink-0 text-amber-brand" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                <span dir="ltr" class="font-medium">maxitronic.dz@gmail.com</span>
+              </a>
+              <a href="https://wa.me/213554603322" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-lg bg-[#25D366] px-4 py-3 font-semibold text-[#0B1F17] transition hover:brightness-95">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
+                <span data-i18n="contact.whatsapp">راسلنا عبر واتساب</span>
+              </a>
+            </div>
+          </div>
+          <div class="rounded-2xl border border-navy-700/70 bg-navy-900 p-7">
+            <h3 data-i18n="contact.zoneTitle" class="font-display text-lg font-bold text-white">منطقة التدخّل</h3>
+            <p data-i18n="contact.zone" class="mt-2 text-sm leading-relaxed text-steel-400">في كامل الجزائر.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="border-t border-navy-700/60 bg-navy-900/60">
+    <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:grid-cols-3">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <svg width="24" height="24" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="27" height="27" rx="6" stroke="#FFB224" stroke-width="2"/>
+            <circle cx="15" cy="15" r="6.5" stroke="#F4F8FE" stroke-width="2"/>
+            <circle cx="15" cy="15" r="2.2" fill="#FFB224"/>
+          </svg>
+          <span class="font-display font-bold tracking-wide text-white">MAXITRONIC</span>
+        </div>
+        <p data-i18n="footer.tagline" class="mt-3 text-sm leading-relaxed text-steel-500">مراقبة بالفيديو احترافية في الجزائر — بيع، تركيب ومتابعة.</p>
+        <a href="mailto:maxitronic.dz@gmail.com" dir="ltr" class="mt-3 inline-block text-sm text-steel-400 transition hover:text-white">maxitronic.dz@gmail.com</a>
+      </div>
+
+      <nav aria-label="Liens rapides">
+        <h3 data-i18n="footer.linksTitle" class="text-sm font-semibold uppercase tracking-wide text-white">روابط سريعة</h3>
+        <ul class="mt-3 space-y-2 text-sm text-steel-500">
+          <li><a href="#services" data-i18n="nav.services" class="transition hover:text-white">خدماتنا</a></li>
+          <li><a href="#realisations" data-i18n="nav.real" class="transition hover:text-white">إنجازاتنا</a></li>
+          <li><a href="#why"      data-i18n="nav.why"      class="transition hover:text-white">لماذا نحن؟</a></li>
+          <li><a href="#contact"  data-i18n="nav.contact"  class="transition hover:text-white">اتصل بنا</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Mentions">
+        <h3 data-i18n="footer.legalTitle" class="text-sm font-semibold uppercase tracking-wide text-white">معلومات</h3>
+        <ul class="mt-3 space-y-2 text-sm text-steel-500">
+          <li><a href="#" data-i18n="footer.legal"   class="transition hover:text-white">إشعار قانوني</a></li>
+          <li><a href="#" data-i18n="footer.privacy" class="transition hover:text-white">سياسة الخصوصية</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="border-t border-navy-700/50 py-5 text-center text-xs text-steel-500">
+      <span data-i18n="footer.copyright">© 2026 ماكسيترونيك — الجزائر. جميع الحقوق محفوظة.</span>
+    </div>
+  </footer>
+
+  <!-- ============ WHATSAPP FLOAT ============ -->
+  <a href="https://wa.me/213554603322" target="_blank" rel="noopener"
+     aria-label="Contacter Maxitronic sur WhatsApp"
+     class="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-xl shadow-black/40 transition hover:scale-105"
+     style="right: 1.25rem; left: auto;">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="#0B1F17" aria-hidden="true">
+      <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4 0-.5.1-.7l.4-.5c.1-.2.2-.3.3-.5v-.5L9.7 8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.8c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.7-.4Z"/>
+    </svg>
+  </a>
+
+
+  <!-- ============ VISIONNEUSE PHOTO ============ -->
+  <dialog id="lightbox" class="m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-navy-950/95" aria-label="Photo agrandie">
+    <div id="lb-stage" class="relative flex h-full w-full items-center justify-center p-4 sm:p-12">
+      <img id="lb-img" src="" alt="" class="max-h-[80vh] max-w-full rounded-lg object-contain shadow-2xl" />
+      <p id="lb-caption" class="absolute inset-x-0 bottom-5 px-16 text-center text-sm text-steel-300"></p>
+      <button id="lb-close" type="button" aria-label="إغلاق"
+              class="absolute end-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-navy-800 text-white transition hover:bg-navy-700">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <button id="lb-prev" type="button" aria-label="الصورة السابقة"
+              class="absolute start-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-navy-800 text-white transition hover:bg-navy-700 sm:start-6">
+        <svg class="rtl:rotate-180" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <button id="lb-next" type="button" aria-label="الصورة التالية"
+              class="absolute end-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-navy-800 text-white transition hover:bg-navy-700 sm:end-6">
+        <svg class="rtl:rotate-180" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+  </dialog>
+
+  <!-- ============ SCRIPTS ============ -->
+  <script>
+    /* ---------- Traductions ---------- */
+    const I18N = {
+      fr: {
+        "footer.copyright": "© 2026 Maxitronic — Algérie. Tous droits réservés.",
+        "footer.tagline": "Vidéosurveillance professionnelle en Algérie — vente, installation et suivi.",
+        "contact.emailLabel": "Écrire par e-mail",
+        "contact.form.success": "WhatsApp s'ouvre avec votre demande pré-remplie : il ne reste plus qu'à appuyer sur Envoyer.",
+        "contact.zone": "Partout en Algérie.",
+        "contact.reachSub": "Appelez-nous, écrivez-nous par e-mail ou sur WhatsApp.",
+        "why.w3.desc": "Après l'installation, on reste en contact par e-mail et WhatsApp.",
+        "why.w3.title": "Suivi après-vente",
+        "why.w2.desc": "Des années d'installations sur le terrain : grandes surfaces, centres commerciaux, sites tertiaires et résidences.",
+        "why.w2.title": "Des années d'expérience",
+        "why.w1.desc": "Nous intervenons partout en Algérie, pour les commerces, les entreprises et les particuliers.",
+        "why.w1.title": "Partout en Algérie",
+        "services.s2.f3": "Suivi après-vente par e-mail & WhatsApp",
+        "services.s2.f1": "Étude & devis sur site",
+        "services.s2.desc": "Étude sur site, pose soignée par des techniciens qualifiés, configuration de l'accès à distance sur votre téléphone, puis suivi après l'installation.",
+        "hero.stat3": "Partout en Algérie",
+        "hero.stat2": "Pros & particuliers",
+        "hero.stat1": "Des années d'expérience",
+        "hero.sub": "Maxitronic fournit et installe des systèmes de vidéosurveillance professionnels — caméras, DVR/NVR et accessoires — pour particuliers et entreprises, partout en Algérie.",
+        "hero.badge": "Vente & installation — Algérie",
+        "hero.cam": "CAM 01 · ALGÉRIE",
+        "lb.open": "Agrandir la photo",
+        "lb.close": "Fermer",
+        "lb.prev": "Photo précédente",
+        "lb.next": "Photo suivante",
+        "nav.real": "Réalisations",
+        "real.eyebrow": "Sur le terrain",
+        "real.title": "Nos réalisations",
+        "real.sub": "Quelques installations réalisées par nos équipes : commerces, centres commerciaux, sites tertiaires.",
+        "real.g1": "Centre commercial — mur d'écrans",
+        "real.g2": "Poste de contrôle — résidence & parking",
+        "real.g3": "Grande surface — zone des caisses",
+        "real.g4": "Extérieur — dôme & bullet sur mât",
+        "real.g5": "Baies réseau & enregistrement",
+        "real.g6": "Armoire technique câblée",
+        "services.s1.alt": "Baie d'enregistreurs et de switchs PoE installée par Maxitronic",
+        "services.s2.alt": "Caméras installées au plafond d'une grande surface",
+        "contact.reachTitle": "Joignez-nous directement",
+        "contact.whatsapp": "Écrire sur WhatsApp",
+        "contact.zoneTitle": "Zone d'intervention",
+        "services.s1.f2": "Enregistreurs DVR & NVR",
+        'nav.services': 'Nos services',
+        'nav.why': 'Pourquoi nous ?',
+        'nav.contact': 'Contact',
+        'nav.cta': 'Demander un devis',
+        'hero.title': 'Sécurisez ce qui compte le plus.',
+        'hero.cta': 'Demander un devis',
+        'hero.cta2': 'Découvrir nos services',
+        'services.eyebrow': 'Ce que nous faisons',
+        'services.title': 'Nos services',
+        'services.s1.title': "Vente d'équipements de pointe",
+        'services.s1.desc': "Caméras IP et analogiques, enregistreurs DVR/NVR, câblage, alimentations et accessoires. Nous sélectionnons des marques reconnues et vous conseillons le matériel adapté à votre site et à votre budget.",
+        'services.s1.f1': 'Caméras intérieures & extérieures',
+        'services.s1.f3': 'Accessoires & câblage certifiés',
+        'services.s2.title': 'Installation & maintenance experte',
+        'services.s2.f2': 'Accès à distance sur smartphone',
+        'why.eyebrow': 'Nos engagements',
+        'why.title': 'Pourquoi nous choisir ?',
+        'contact.eyebrow': 'Parlons de votre projet',
+        'contact.title': 'Contactez-nous',
+        'contact.form.name': 'Nom complet',
+        'contact.form.namePh': 'Votre nom',
+        'contact.form.phone': 'Téléphone',
+        'contact.form.phonePh': '05 XX XX XX XX',
+        'contact.form.msg': 'Votre besoin',
+        'contact.form.msgPh': 'Ex : 4 caméras extérieures pour un commerce…',
+        'contact.form.submit': 'Envoyer via WhatsApp',
+        'contact.form.waGreeting': 'Bonjour Maxitronic, voici ma demande de devis :',
+        'footer.linksTitle': 'Liens rapides',
+        'footer.legalTitle': 'Informations',
+        'footer.legal': 'Mentions légales',
+        'footer.privacy': 'Politique de confidentialité',
+      },
+      en: {
+        "footer.copyright": "© 2026 Maxitronic — Algeria. All rights reserved.",
+        "footer.tagline": "Professional video surveillance in Algeria — sales, installation and follow-up.",
+        "contact.emailLabel": "Send an email",
+        "contact.form.success": "WhatsApp is opening with your request pre-filled: just tap Send.",
+        "contact.zone": "Across Algeria.",
+        "contact.reachSub": "Call us, email us or message us on WhatsApp.",
+        "why.w3.desc": "After installation, we stay in touch by email and WhatsApp.",
+        "why.w3.title": "After-sales follow-up",
+        "why.w2.desc": "Years of installations in the field: supermarkets, shopping centres, office sites and residences.",
+        "why.w2.title": "Years of experience",
+        "why.w1.desc": "We work across Algeria, for shops, businesses and homes.",
+        "why.w1.title": "Across Algeria",
+        "services.s2.f3": "After-sales follow-up by email & WhatsApp",
+        "services.s2.f1": "On-site survey & quote",
+        "services.s2.desc": "On-site survey, clean installation by qualified technicians, remote access set up on your phone, then follow-up after installation.",
+        "hero.stat3": "Across Algeria",
+        "hero.stat2": "Businesses & homes",
+        "hero.stat1": "Years of experience",
+        "hero.sub": "Maxitronic supplies and installs professional video surveillance systems — cameras, DVR/NVR and accessories — for homes and businesses across Algeria.",
+        "hero.badge": "Sales & installation — Algeria",
+        "hero.cam": "CAM 01 · ALGERIA",
+        "lb.open": "Enlarge photo",
+        "lb.close": "Close",
+        "lb.prev": "Previous photo",
+        "lb.next": "Next photo",
+        "nav.real": "Projects",
+        "real.eyebrow": "In the field",
+        "real.title": "Our projects",
+        "real.sub": "A selection of installations by our teams: shops, shopping centres, office sites.",
+        "real.g1": "Shopping centre — video wall",
+        "real.g2": "Control room — residence & car park",
+        "real.g3": "Supermarket — checkout area",
+        "real.g4": "Outdoor — dome & bullet on a pole",
+        "real.g5": "Network & recording racks",
+        "real.g6": "Wired technical cabinet",
+        "services.s1.alt": "Rack of recorders and PoE switches installed by Maxitronic",
+        "services.s2.alt": "Cameras installed on a supermarket ceiling",
+        "contact.reachTitle": "Reach us directly",
+        "contact.whatsapp": "Message us on WhatsApp",
+        "contact.zoneTitle": "Service area",
+        "services.s1.f2": "DVR & NVR recorders",
+        'nav.services': 'Services',
+        'nav.why': 'Why us?',
+        'nav.contact': 'Contact',
+        'nav.cta': 'Get a quote',
+        'hero.title': 'Secure what matters most.',
+        'hero.cta': 'Get a quote',
+        'hero.cta2': 'Explore our services',
+        'services.eyebrow': 'What we do',
+        'services.title': 'Our services',
+        'services.s1.title': 'Top-grade equipment sales',
+        'services.s1.desc': 'IP and analog cameras, DVR/NVR recorders, cabling, power supplies and accessories. We stock trusted brands and help you pick the right hardware for your site and budget.',
+        'services.s1.f1': 'Indoor & outdoor cameras',
+        'services.s1.f3': 'Certified accessories & cabling',
+        'services.s2.title': 'Expert installation & maintenance',
+        'services.s2.f2': 'Remote access on your smartphone',
+        'why.eyebrow': 'Our commitments',
+        'why.title': 'Why choose us?',
+        'contact.eyebrow': "Let's talk about your project",
+        'contact.title': 'Contact us',
+        'contact.form.name': 'Full name',
+        'contact.form.namePh': 'Your name',
+        'contact.form.phone': 'Phone',
+        'contact.form.phonePh': '05 XX XX XX XX',
+        'contact.form.msg': 'Your needs',
+        'contact.form.msgPh': 'E.g. 4 outdoor cameras for a shop…',
+        'contact.form.submit': 'Send via WhatsApp',
+        'contact.form.waGreeting': 'Hello Maxitronic, here is my quote request:',
+        'footer.linksTitle': 'Quick links',
+        'footer.legalTitle': 'Information',
+        'footer.legal': 'Legal notice',
+        'footer.privacy': 'Privacy policy',
+      },
+      ar: {
+        "footer.copyright": "© 2026 ماكسيترونيك — الجزائر. جميع الحقوق محفوظة.",
+        "footer.tagline": "مراقبة بالفيديو احترافية في الجزائر — بيع، تركيب ومتابعة.",
+        "contact.emailLabel": "راسلنا عبر البريد",
+        "contact.form.success": "يتم فتح واتساب مع طلبك جاهزاً: ما عليك سوى الضغط على إرسال.",
+        "contact.zone": "في كامل الجزائر.",
+        "contact.reachSub": "اتصل بنا أو راسلنا عبر البريد الإلكتروني أو واتساب.",
+        "why.w3.desc": "بعد التركيب، نبقى على تواصل معك عبر البريد الإلكتروني وواتساب.",
+        "why.w3.title": "متابعة ما بعد البيع",
+        "why.w2.desc": "سنوات من التركيب في الميدان: مساحات تجارية كبرى، مراكز تجارية، مقرات إدارية وإقامات.",
+        "why.w2.title": "سنوات من الخبرة",
+        "why.w1.desc": "نتدخّل في كامل الجزائر، للمحلات والشركات والأفراد.",
+        "why.w1.title": "في كامل الجزائر",
+        "services.s2.f3": "متابعة ما بعد البيع عبر البريد وواتساب",
+        "services.s2.f1": "معاينة وعرض سعر في الموقع",
+        "services.s2.desc": "معاينة في الموقع، تركيب متقن على يد تقنيين مؤهلين، تفعيل المشاهدة عن بُعد على هاتفك، ثم متابعة بعد التركيب.",
+        "hero.stat3": "في كامل الجزائر",
+        "hero.stat2": "للمهنيين والأفراد",
+        "hero.stat1": "سنوات من الخبرة",
+        "hero.sub": "ماكسيترونيك توفّر وتركّب أنظمة مراقبة بالفيديو احترافية — كاميرات، أجهزة تسجيل DVR/NVR وملحقات — للأفراد والشركات في كامل الجزائر.",
+        "hero.badge": "بيع وتركيب — الجزائر",
+        "hero.cam": "كاميرا 01 · الجزائر",
+        "lb.open": "تكبير الصورة",
+        "lb.close": "إغلاق",
+        "lb.prev": "الصورة السابقة",
+        "lb.next": "الصورة التالية",
+        "nav.real": "إنجازاتنا",
+        "real.eyebrow": "في الميدان",
+        "real.title": "إنجازاتنا",
+        "real.sub": "بعض التركيبات التي أنجزتها فرقنا: محلات، مراكز تجارية، مقرات إدارية.",
+        "real.g1": "مركز تجاري — جدار شاشات",
+        "real.g2": "غرفة مراقبة — إقامة وموقف سيارات",
+        "real.g3": "مساحة تجارية كبرى — منطقة الصناديق",
+        "real.g4": "خارجي — كاميرات قبة وأسطوانية على عمود",
+        "real.g5": "خزائن الشبكة والتسجيل",
+        "real.g6": "خزانة تقنية مكبّلة",
+        "services.s1.alt": "خزانة أجهزة تسجيل ومحوّلات PoE ركّبتها ماكسيترونيك",
+        "services.s2.alt": "كاميرات مركّبة في سقف مساحة تجارية كبرى",
+        "contact.reachTitle": "تواصل معنا مباشرة",
+        "contact.whatsapp": "راسلنا عبر واتساب",
+        "contact.zoneTitle": "منطقة التدخّل",
+        "services.s1.f2": "أجهزة تسجيل DVR و NVR",
+        'nav.services': 'خدماتنا',
+        'nav.why': 'لماذا نحن؟',
+        'nav.contact': 'اتصل بنا',
+        'nav.cta': 'اطلب عرض سعر',
+        'hero.title': 'أمّن ما يهمّك أكثر.',
+        'hero.cta': 'اطلب عرض سعر',
+        'hero.cta2': 'اكتشف خدماتنا',
+        'services.eyebrow': 'ما نقوم به',
+        'services.title': 'خدماتنا',
+        'services.s1.title': 'بيع معدات عالية الجودة',
+        'services.s1.desc': 'كاميرات IP وتناظرية، أجهزة تسجيل DVR/NVR، كوابل، محوّلات طاقة وملحقات. نختار علامات موثوقة وننصحك بالعتاد المناسب لموقعك وميزانيتك.',
+        'services.s1.f1': 'كاميرات داخلية وخارجية',
+        'services.s1.f3': 'ملحقات وكوابل معتمدة',
+        'services.s2.title': 'تركيب وصيانة باحتراف',
+        'services.s2.f2': 'مشاهدة عن بُعد على الهاتف',
+        'why.eyebrow': 'التزاماتنا',
+        'why.title': 'لماذا تختارنا؟',
+        'contact.eyebrow': 'لنتحدث عن مشروعك',
+        'contact.title': 'اتصل بنا',
+        'contact.form.name': 'الاسم الكامل',
+        'contact.form.namePh': 'اسمك',
+        'contact.form.phone': 'الهاتف',
+        'contact.form.phonePh': '05 XX XX XX XX',
+        'contact.form.msg': 'احتياجك',
+        'contact.form.msgPh': 'مثال: 4 كاميرات خارجية لمحل تجاري…',
+        'contact.form.submit': 'إرسال عبر واتساب',
+        'contact.form.waGreeting': 'مرحباً ماكسيترونيك، هذا طلب عرض السعر الخاص بي:',
+        'footer.linksTitle': 'روابط سريعة',
+        'footer.legalTitle': 'معلومات',
+        'footer.legal': 'إشعار قانوني',
+        'footer.privacy': 'سياسة الخصوصية',
+      }
+    };
+
+    /* ---------- Bascule de langue + RTL ---------- */
+    const langButtons = document.querySelectorAll('.lang-btn');
+
+    function setLang(lang) {
+      const dict = I18N[lang];
+      if (!dict) return;
+
+      // Direction + attribut lang
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+
+      // Textes
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (dict[key]) el.textContent = dict[key];
+      });
+
+      // Placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        if (dict[key]) el.placeholder = dict[key];
+      });
+
+      // Libellés accessibles de la visionneuse
+      document.querySelectorAll('.lb-trigger').forEach(el => el.setAttribute('aria-label', dict['lb.open']));
+      [['lb-close','lb.close'],['lb-prev','lb.prev'],['lb-next','lb.next']]
+        .forEach(([id, key]) => document.getElementById(id).setAttribute('aria-label', dict[key]));
+
+      // Textes alternatifs des images
+      document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+        const key = el.dataset.i18nAlt;
+        if (dict[key]) el.alt = dict[key];
+      });
+
+      // État visuel du sélecteur
+      langButtons.forEach(btn => {
+        const active = btn.dataset.lang === lang;
+        btn.classList.toggle('bg-amber-brand', active);
+        btn.classList.toggle('text-navy-950', active);
+        btn.classList.toggle('text-steel-400', !active);
+      });
+    }
+
+    langButtons.forEach(btn => btn.addEventListener('click', () => setLang(btn.dataset.lang)));
+
+    // Langue par défaut : arabe
+    setLang('ar');
+
+    /* ---------- Menu mobile ---------- */
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('hidden') === false;
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+    mobileMenu.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      })
+    );
+
+    /* ---------- Horodatage CCTV ---------- */
+    const clock = document.getElementById('cam-clock');
+    function tick() {
+      const d = new Date();
+      clock.textContent = [d.getHours(), d.getMinutes(), d.getSeconds()]
+        .map(n => String(n).padStart(2, '0')).join(':');
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    /* ---------- Révélation au scroll ---------- */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+    /* ---------- Visionneuse photo ---------- */
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    const lbCap = document.getElementById('lb-caption');
+    const triggers = [...document.querySelectorAll('.lb-trigger')];
+    let lbIndex = 0;
+
+    function lbShow(i) {
+      lbIndex = (i + triggers.length) % triggers.length;
+      const t = triggers[lbIndex];
+      const thumb = t.querySelector('img');
+      lbImg.src = t.dataset.full;
+      lbImg.alt = thumb.alt;
+      lbCap.textContent = thumb.alt;
+    }
+    triggers.forEach((t, i) => t.addEventListener('click', () => { lbShow(i); lb.showModal(); }));
+    document.getElementById('lb-close').addEventListener('click', () => lb.close());
+    document.getElementById('lb-prev').addEventListener('click', () => lbShow(lbIndex - 1));
+    document.getElementById('lb-next').addEventListener('click', () => lbShow(lbIndex + 1));
+    // Clic en dehors de la photo = fermer
+    document.getElementById('lb-stage').addEventListener('click', e => { if (e.target.id === 'lb-stage') lb.close(); });
+    // Flèches du clavier (inversées en arabe, sens de lecture RTL)
+    lb.addEventListener('keydown', e => {
+      const rtl = document.documentElement.dir === 'rtl';
+      if (e.key === 'ArrowRight') lbShow(lbIndex + (rtl ? -1 : 1));
+      if (e.key === 'ArrowLeft')  lbShow(lbIndex + (rtl ? 1 : -1));
+    });
+    // Glisser du doigt sur mobile
+    let touchX = null;
+    lb.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', e => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX; touchX = null;
+      if (Math.abs(dx) < 50) return;
+      const rtl = document.documentElement.dir === 'rtl';
+      lbShow(lbIndex + ((dx < 0) !== rtl ? 1 : -1));
+    });
+
+    /* ---------- Formulaire (simulation) ---------- */
+    document.getElementById('contact-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const form = e.target;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      // Ouvre WhatsApp avec la demande pré-remplie
+      const dict = I18N[document.documentElement.lang] || I18N.ar;
+      const text = [
+        dict['contact.form.waGreeting'],
+        '',
+        `${dict['contact.form.name']} : ${form.elements.name.value.trim()}`,
+        `${dict['contact.form.phone']} : ${form.elements.phone.value.trim()}`,
+        '',
+        form.elements.message.value.trim(),
+      ].join('\n');
+      const url = 'https://wa.me/213554603322?text=' + encodeURIComponent(text);
+      const win = window.open(url, '_blank');
+      if (win) win.opener = null; else location.href = url;
+
+      document.getElementById('form-success').classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
