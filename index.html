@@ -5,31 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ماكسيترونيك — مراقبة بالفيديو في الجزائر</title>
   <meta name="description" content="ماكسيترونيك: بيع وتركيب احترافي لأنظمة المراقبة بالفيديو في الجزائر." />
+  <link rel="canonical" href="https://itmaxitronic.github.io/main_website/" />
+
+  <!-- Icône -->
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+  <meta name="theme-color" content="#081426" />
+
+  <!-- Aperçu de partage (WhatsApp, Facebook…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maxitronic" />
+  <meta property="og:locale" content="ar_DZ" />
+  <meta property="og:locale:alternate" content="fr_FR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:url" content="https://itmaxitronic.github.io/main_website/" />
+  <meta property="og:title" content="ماكسيترونيك — مراقبة بالفيديو في الجزائر" />
+  <meta property="og:description" content="بيع وتركيب احترافي لأنظمة المراقبة بالفيديو في كامل الجزائر. اطلب عرض سعر عبر واتساب." />
+  <meta property="og:image" content="https://itmaxitronic.github.io/main_website/img/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="ماكسيترونيك — أمّن ما يهمّك أكثر." />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navy:   { 950: '#081426', 900: '#0D2340', 800: '#13315A', 700: '#1B3A63' },
-            steel:  { 300: '#C3D0E3', 400: '#93A7C4', 500: '#6B7F9E' },
-            amber:  { brand: '#FFB224', brandDark: '#E69500' },
-          },
-          fontFamily: {
-            display: ['"Space Grotesk"', '"IBM Plex Sans Arabic"', 'sans-serif'],
-            body:    ['Inter', '"IBM Plex Sans Arabic"', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
+  <!-- Tailwind (compilé : npm run build:css) -->
+  <link rel="stylesheet" href="assets/tailwind.css" />
 
   <style>
     body { font-family: Inter, "IBM Plex Sans Arabic", sans-serif; }
@@ -87,7 +93,7 @@
       </a>
 
       <!-- Desktop nav -->
-      <nav class="hidden items-center gap-7 text-sm font-medium md:flex" aria-label="Navigation principale">
+      <nav class="hidden items-center gap-7 text-sm font-medium md:flex" aria-label="التنقل الرئيسي" data-i18n-aria="aria.mainNav">
         <a href="#services" data-i18n="nav.services" class="transition hover:text-white">خدماتنا</a>
         <a href="#realisations" data-i18n="nav.real" class="transition hover:text-white">إنجازاتنا</a>
         <a href="#why"      data-i18n="nav.why"      class="transition hover:text-white">لماذا نحن؟</a>
@@ -96,7 +102,7 @@
 
       <div class="flex items-center gap-3">
         <!-- Language switcher -->
-        <div class="flex overflow-hidden rounded-lg border border-navy-700 text-xs font-semibold" role="group" aria-label="Langue">
+        <div class="flex overflow-hidden rounded-lg border border-navy-700 text-xs font-semibold" role="group" aria-label="اللغة" data-i18n-aria="aria.lang">
           <button data-lang="fr" class="lang-btn px-2.5 py-1.5 text-steel-400 transition hover:text-white">FR</button>
           <button data-lang="ar" class="lang-btn bg-amber-brand px-2.5 py-1.5 text-navy-950">AR</button>
           <button data-lang="en" class="lang-btn px-2.5 py-1.5 text-steel-400 transition hover:text-white">EN</button>
@@ -108,7 +114,7 @@
           اطلب عرض سعر</a>
 
         <!-- Burger -->
-        <button id="menu-btn" class="md:hidden" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
+        <button id="menu-btn" class="md:hidden" aria-label="فتح القائمة" data-i18n-aria="aria.menu" aria-expanded="false" aria-controls="mobile-menu">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <path d="M4 7h16M4 12h16M4 17h16"/>
           </svg>
@@ -118,7 +124,7 @@
 
     <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden border-t border-navy-700/60 bg-navy-900 px-5 py-4 md:hidden">
-      <nav class="flex flex-col gap-4 text-sm font-medium" aria-label="Navigation mobile">
+      <nav class="flex flex-col gap-4 text-sm font-medium" aria-label="قائمة التنقل" data-i18n-aria="aria.mobileNav">
         <a href="#services" data-i18n="nav.services" class="mobile-link">خدماتنا</a>
         <a href="#realisations" data-i18n="nav.real" class="mobile-link">إنجازاتنا</a>
         <a href="#why"      data-i18n="nav.why"      class="mobile-link">لماذا نحن؟</a>
@@ -394,7 +400,7 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="border-t border-navy-700/60 bg-navy-900/60">
-    <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:grid-cols-3">
+    <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:grid-cols-2">
       <div>
         <div class="flex items-center gap-2.5">
           <svg width="24" height="24" viewBox="0 0 30 30" fill="none" aria-hidden="true">
@@ -408,7 +414,7 @@
         <a href="mailto:maxitronic.dz@gmail.com" dir="ltr" class="mt-3 inline-block text-sm text-steel-400 transition hover:text-white">maxitronic.dz@gmail.com</a>
       </div>
 
-      <nav aria-label="Liens rapides">
+      <nav aria-label="روابط سريعة" data-i18n-aria="aria.quickLinks">
         <h3 data-i18n="footer.linksTitle" class="text-sm font-semibold uppercase tracking-wide text-white">روابط سريعة</h3>
         <ul class="mt-3 space-y-2 text-sm text-steel-500">
           <li><a href="#services" data-i18n="nav.services" class="transition hover:text-white">خدماتنا</a></li>
@@ -418,13 +424,6 @@
         </ul>
       </nav>
 
-      <nav aria-label="Mentions">
-        <h3 data-i18n="footer.legalTitle" class="text-sm font-semibold uppercase tracking-wide text-white">معلومات</h3>
-        <ul class="mt-3 space-y-2 text-sm text-steel-500">
-          <li><a href="#" data-i18n="footer.legal"   class="transition hover:text-white">إشعار قانوني</a></li>
-          <li><a href="#" data-i18n="footer.privacy" class="transition hover:text-white">سياسة الخصوصية</a></li>
-        </ul>
-      </nav>
     </div>
     <div class="border-t border-navy-700/50 py-5 text-center text-xs text-steel-500">
       <span data-i18n="footer.copyright">© 2026 ماكسيترونيك — الجزائر. جميع الحقوق محفوظة.</span>
@@ -433,7 +432,7 @@
 
   <!-- ============ WHATSAPP FLOAT ============ -->
   <a href="https://wa.me/213554603322" target="_blank" rel="noopener"
-     aria-label="Contacter Maxitronic sur WhatsApp"
+     aria-label="تواصل مع ماكسيترونيك عبر واتساب" data-i18n-aria="aria.whatsapp"
      class="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-xl shadow-black/40 transition hover:scale-105"
      style="right: 1.25rem; left: auto;">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="#0B1F17" aria-hidden="true">
@@ -443,7 +442,7 @@
 
 
   <!-- ============ VISIONNEUSE PHOTO ============ -->
-  <dialog id="lightbox" class="m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-navy-950/95" aria-label="Photo agrandie">
+  <dialog id="lightbox" class="m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-navy-950/95" aria-label="صورة مكبّرة" data-i18n-aria="aria.lightbox">
     <div id="lb-stage" class="relative flex h-full w-full items-center justify-center p-4 sm:p-12">
       <img id="lb-img" src="" alt="" class="max-h-[80vh] max-w-full rounded-lg object-contain shadow-2xl" />
       <p id="lb-caption" class="absolute inset-x-0 bottom-5 px-16 text-center text-sm text-steel-300"></p>
@@ -512,6 +511,13 @@
         'nav.why': 'Pourquoi nous ?',
         'nav.contact': 'Contact',
         'nav.cta': 'Demander un devis',
+        'aria.mainNav': "Navigation principale",
+        'aria.lang': "Langue",
+        'aria.menu': "Ouvrir le menu",
+        'aria.mobileNav': "Navigation mobile",
+        'aria.quickLinks': "Liens rapides",
+        'aria.whatsapp': "Contacter Maxitronic sur WhatsApp",
+        'aria.lightbox': "Photo agrandie",
         'hero.title': 'Sécurisez ce qui compte le plus.',
         'hero.cta': 'Demander un devis',
         'hero.cta2': 'Découvrir nos services',
@@ -536,9 +542,6 @@
         'contact.form.submit': 'Envoyer via WhatsApp',
         'contact.form.waGreeting': 'Bonjour Maxitronic, voici ma demande de devis :',
         'footer.linksTitle': 'Liens rapides',
-        'footer.legalTitle': 'Informations',
-        'footer.legal': 'Mentions légales',
-        'footer.privacy': 'Politique de confidentialité',
       },
       en: {
         "footer.copyright": "© 2026 Maxitronic — Algeria. All rights reserved.",
@@ -586,6 +589,13 @@
         'nav.why': 'Why us?',
         'nav.contact': 'Contact',
         'nav.cta': 'Get a quote',
+        'aria.mainNav': "Main navigation",
+        'aria.lang': "Language",
+        'aria.menu': "Open menu",
+        'aria.mobileNav': "Mobile navigation",
+        'aria.quickLinks': "Quick links",
+        'aria.whatsapp': "Contact Maxitronic on WhatsApp",
+        'aria.lightbox': "Enlarged photo",
         'hero.title': 'Secure what matters most.',
         'hero.cta': 'Get a quote',
         'hero.cta2': 'Explore our services',
@@ -610,9 +620,6 @@
         'contact.form.submit': 'Send via WhatsApp',
         'contact.form.waGreeting': 'Hello Maxitronic, here is my quote request:',
         'footer.linksTitle': 'Quick links',
-        'footer.legalTitle': 'Information',
-        'footer.legal': 'Legal notice',
-        'footer.privacy': 'Privacy policy',
       },
       ar: {
         "footer.copyright": "© 2026 ماكسيترونيك — الجزائر. جميع الحقوق محفوظة.",
@@ -660,6 +667,13 @@
         'nav.why': 'لماذا نحن؟',
         'nav.contact': 'اتصل بنا',
         'nav.cta': 'اطلب عرض سعر',
+        'aria.mainNav': "التنقل الرئيسي",
+        'aria.lang': "اللغة",
+        'aria.menu': "فتح القائمة",
+        'aria.mobileNav': "قائمة التنقل",
+        'aria.quickLinks': "روابط سريعة",
+        'aria.whatsapp': "تواصل مع ماكسيترونيك عبر واتساب",
+        'aria.lightbox': "صورة مكبّرة",
         'hero.title': 'أمّن ما يهمّك أكثر.',
         'hero.cta': 'اطلب عرض سعر',
         'hero.cta2': 'اكتشف خدماتنا',
@@ -684,9 +698,6 @@
         'contact.form.submit': 'إرسال عبر واتساب',
         'contact.form.waGreeting': 'مرحباً ماكسيترونيك، هذا طلب عرض السعر الخاص بي:',
         'footer.linksTitle': 'روابط سريعة',
-        'footer.legalTitle': 'معلومات',
-        'footer.legal': 'إشعار قانوني',
-        'footer.privacy': 'سياسة الخصوصية',
       }
     };
 
@@ -718,6 +729,12 @@
       [['lb-close','lb.close'],['lb-prev','lb.prev'],['lb-next','lb.next']]
         .forEach(([id, key]) => document.getElementById(id).setAttribute('aria-label', dict[key]));
 
+      // Libellés pour lecteurs d'écran
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        const key = el.dataset.i18nAria;
+        if (dict[key]) el.setAttribute('aria-label', dict[key]);
+      });
+
       // Textes alternatifs des images
       document.querySelectorAll('[data-i18n-alt]').forEach(el => {
         const key = el.dataset.i18nAlt;
@@ -733,10 +750,15 @@
       });
     }
 
-    langButtons.forEach(btn => btn.addEventListener('click', () => setLang(btn.dataset.lang)));
+    langButtons.forEach(btn => btn.addEventListener('click', () => {
+      setLang(btn.dataset.lang);
+      try { localStorage.setItem('lang', btn.dataset.lang); } catch (e) {}
+    }));
 
-    // Langue par défaut : arabe
-    setLang('ar');
+    // Langue par défaut : arabe, sauf si le visiteur en a choisi une autre
+    let savedLang = null;
+    try { savedLang = localStorage.getItem('lang'); } catch (e) {}
+    setLang(I18N[savedLang] ? savedLang : 'ar');
 
     /* ---------- Menu mobile ---------- */
     const menuBtn = document.getElementById('menu-btn');
